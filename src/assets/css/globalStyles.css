@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 26px;
+}
+
+p {
+    font-weight: 400;
+}
+
+.icon {
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+    padding: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.icon-star {
+    background-image: url('../img/icon/star.svg');
+}
+
+.icon-all {
+    background-image: url('../img/icon/all.svg');
+}
+
+.container {
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+@media (max-width: 427px) {
+    .container {
+        max-width: 90%;
+    }
+}
