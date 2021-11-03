@@ -27,4 +27,15 @@ export default class HeroImage extends Vue {
   .containerImageHero img {
     width: 330px;
   }
+
+  @media (max-width: 768px) {
+    .containerImageHero {
+      margin-top: 0;
+      height: 280px;
+    }
+
+    .containerImageHero img {
+      max-width: 250px;
+    }
+}
 </style>

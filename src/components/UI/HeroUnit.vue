@@ -67,4 +67,10 @@ export default class HeroUnit extends Vue {
     margin-bottom: 50px;
     color: #5E5E5E;
   }
+
+    @media (max-width: 768px) {
+    .hero h1 {
+      margin-top: 25px;
+    }
+  }
 </style>
