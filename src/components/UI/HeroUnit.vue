@@ -6,24 +6,24 @@
     <p>
       {{ subtitle }}
     </p>
-    <actions-button
+    <action-button
       :active="active"
       @set-action="setAction"
       :iconName="iconName"
     >
       {{ textButton }}
-    </actions-button>
+    </action-button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
-import ActionsButton from './ActionButton.vue'
+import { ActionButton } from '@/components/UI'
 
 @Component({
   name: 'HeroUnit',
   components: {
-    ActionsButton
+    ActionButton
   }
 })
 export default class HeroUnit extends Vue {

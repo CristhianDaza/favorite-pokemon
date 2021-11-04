@@ -13,10 +13,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { HeroUnit } from '../components/UI'
-import HeroImage from '../components/home/HeroImage.vue'
+import { HeroUnit } from '@/components/UI'
+import { HeroImage } from '@/components/home'
 
 @Component({
+  name: 'Home',
   components: {
     HeroUnit,
     HeroImage
