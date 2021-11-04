@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Lato', sans-serif;
     font-size: 18px;
@@ -15,8 +21,8 @@ p {
 }
 
 .icon {
-    height: 15px;
-    width: 15px;
+    height: 22px;
+    width: 22px;
     display: inline-block;
     padding: 5px;
     background-position: center;
@@ -29,6 +35,10 @@ p {
 
 .icon-all {
     background-image: url('../img/icon/all.svg');
+}
+
+.icon-search {
+    background-image: url('../img/icon/search.svg');
 }
 
 .container {

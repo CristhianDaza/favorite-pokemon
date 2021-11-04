@@ -8,6 +8,11 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+  },
+  {
+    path: '/pokemon-list',
+    name: 'PokemonList',
+    component: () => import(/* webpackChunkName: "pokemon-list" */ '../views/PokemonList.vue')
   }
 ]
 

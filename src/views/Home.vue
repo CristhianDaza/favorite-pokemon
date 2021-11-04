@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <hero-image />
     <hero-unit
       :title="title"
@@ -30,7 +30,7 @@ export default class Home extends Vue {
   private textButton = 'Get started';
 
   private startApplication (): void {
-    console.log('click')
+    this.$router.push({ name: 'PokemonList' })
   }
 }
 </script>
