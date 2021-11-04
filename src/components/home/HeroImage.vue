@@ -1,6 +1,6 @@
 <template>
   <div class="containerImageHero">
-    <img :src="require('@/assets/img/heroImg.png')" alt="Circle Hero">
+    <img :src="require('@/assets/img/pokemon/heroImg.png')" alt="Circle Hero">
   </div>
 </template>
 
