@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <hero-image />
     <hero-unit
       :title="title"
