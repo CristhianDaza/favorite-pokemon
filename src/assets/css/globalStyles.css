@@ -21,8 +21,8 @@ p {
 }
 
 .icon {
-    height: 22px;
-    width: 22px;
+    height: 25px;
+    width: 25px;
     display: inline-block;
     padding: 5px;
     background-position: center;
@@ -31,6 +31,14 @@ p {
 
 .icon-star {
     background-image: url('../img/icon/star.svg');
+}
+
+.icon-star-disabled {
+    background-image: url('../img/icon/star-disabled.svg');
+}
+
+.icon-star-active {
+    background-image: url('../img/icon/star-active.svg');
 }
 
 .icon-all {

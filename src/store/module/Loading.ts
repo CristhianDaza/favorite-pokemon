@@ -11,7 +11,7 @@ config.rawError = true
 })
 
 class LoadingStore extends VuexModule {
-  public isLoading = true;
+  public isLoading = false;
 
   get IsLoading (): boolean {
     return this.isLoading

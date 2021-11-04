@@ -1,5 +1,6 @@
 import ActionButton from './ActionButton.vue'
 import HeroUnit from './HeroUnit.vue'
 import SearchInput from './SearchInput.vue'
+import ListItem from './ListItem.vue'
 
-export { ActionButton, HeroUnit, SearchInput }
+export { ActionButton, HeroUnit, SearchInput, ListItem }
