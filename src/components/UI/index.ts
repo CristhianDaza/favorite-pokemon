@@ -3,5 +3,3 @@ import HeroUnit from './HeroUnit.vue'
 import SearchInput from './SearchInput.vue'
 
 export { ActionButton, HeroUnit, SearchInput }
-
-export default {}
