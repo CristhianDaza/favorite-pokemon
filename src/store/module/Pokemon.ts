@@ -30,6 +30,12 @@ class PokemonStore extends VuexModule {
     return this.favoritePokemon
   }
 
+  get filterByName () {
+    return (search: string): pokemonResult[] => {
+      return this.pokemonList.filter(({ name }) => name.toLowerCase().indexOf(search.toLowerCase()) > -1)
+    }
+  }
+
   @Mutation
   SET_POKEMON (payload: pokemonResult[]): void {
     this.pokemonList = payload

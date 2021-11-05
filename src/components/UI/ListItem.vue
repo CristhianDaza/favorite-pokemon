@@ -41,6 +41,7 @@ export default class ListItem extends Vue {
   }
   .list-pokemon p {
     font-size: 22px;
+    text-transform: capitalize;
   }
 
   .list-pokemon .favorite {

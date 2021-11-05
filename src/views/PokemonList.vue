@@ -56,15 +56,17 @@ export default class PokemonList extends Vue {
 
   private textButton = 'Go back home';
 
+  private search = '';
+
   async created (): Promise<void> {
     if (this.getPokemon.length === 0) {
       await Pokemon.getPokemon()
     }
-    console.log(this.getPokemon)
   }
 
   private searchCharacter (e: string): void {
-    console.log(e)
+    this.search = e
+    Pokemon.filterByName(e)
   }
 
   private goBack (): void {
@@ -76,7 +78,7 @@ export default class PokemonList extends Vue {
   }
 
   public get getPokemon (): pokemonResult[] {
-    return Pokemon.PokemonList
+    return Pokemon.filterByName(this.search)
   }
 
   private setFavorite (name: string) {
