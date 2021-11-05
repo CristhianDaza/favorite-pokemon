@@ -1,5 +1,5 @@
 <template>
-  <div class="hero">
+  <div class="hero container">
     <h1>
       {{ title }}
     </h1>

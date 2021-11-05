@@ -1,9 +1,9 @@
 <template>
   <button
     class="action-button"
-    :class="active ? 'active' : 'disabled'"
+    :class="[active ? 'active' : 'disabled', isFullWith ? 'full-width' : '']"
     @click="setAction"
-    :disabled="!active"
+    :disabled="isDisabled"
   >
     <i
       v-if="iconName"
@@ -32,6 +32,12 @@ export default class ActionsButton extends Vue {
   @Prop({ type: String, required: false })
   private iconName!: string;
 
+  @Prop({ type: Boolean, required: false })
+  private isDisabled!: boolean;
+
+  @Prop({ type: Boolean, required: false })
+  private isFullWith!: boolean;
+
   @Emit('set-action')
   private setAction (): boolean {
     return true
@@ -48,10 +54,14 @@ export default class ActionsButton extends Vue {
     outline: none;
     border-color: transparent;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+  }
+
+  .full-width {
+    width: 100%;
   }
 
   .action-button.active {
@@ -65,10 +75,9 @@ export default class ActionsButton extends Vue {
 
   .action-button.disabled {
     background-color: #BFBFBF;
-    cursor: auto;
   }
 
   .action-button i {
-    margin-right: 5px;
+    margin-right: 10px;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div class="control">
+<div class="control container">
   <input
     type="text"
     placeholder="Search"
@@ -30,7 +30,9 @@ export default class SearchInput extends Vue {
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
   .control {
-    position: relative;
+    position: sticky;
+    top: 0;
+    background: white;
   }
 
   input {

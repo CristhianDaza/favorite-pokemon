@@ -54,6 +54,10 @@ p {
     margin: 0 auto;
 }
 
+.container-fluid {
+    width: 100%;
+}
+
 @media (max-width: 427px) {
     .container {
         max-width: 90%;

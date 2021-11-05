@@ -1,14 +1,14 @@
 <template>
-  <div class="container-list">
+  <div>
     <template v-if="isLoading">
       <loader />
     </template>
-    <div class="container" v-else>
+    <div v-else>
       <search-input
         @search-character="searchCharacter"
       />
-      <template v-if="getPokemon">
-        <div class="container-list">
+      <template v-if="getPokemon.length > 0">
+        <div class="container container-list">
           <list-item
             v-for="(pokemon, i) in getPokemon"
             :key="i"
@@ -17,6 +17,7 @@
             @set-favorite="setFavorite"
           />
         </div>
+        <footer-buttons />
       </template>
       <template v-else>
         <hero-unit
@@ -33,7 +34,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { SearchInput, HeroUnit, ListItem } from '@/components/UI'
+import { SearchInput, HeroUnit, ListItem, FooterButtons } from '@/components/UI'
 import { Loader } from '../components/layout'
 import { Loading, Pokemon } from '@/store/module'
 import { pokemonResult } from '@/typings'
@@ -44,7 +45,8 @@ import { pokemonResult } from '@/typings'
     SearchInput,
     Loader,
     HeroUnit,
-    ListItem
+    ListItem,
+    FooterButtons
   }
 })
 export default class PokemonList extends Vue {
@@ -70,11 +72,11 @@ export default class PokemonList extends Vue {
   }
 
   public get isLoading (): boolean {
-    return Loading.isLoading
+    return Loading.IsLoading
   }
 
   public get getPokemon (): pokemonResult[] {
-    return Pokemon.pokemonList
+    return Pokemon.PokemonList
   }
 
   private setFavorite (name: string) {
@@ -86,5 +88,6 @@ export default class PokemonList extends Vue {
 <style scoped>
   .container-list {
     margin-top: 20px;
+    min-height: calc(100vh - 170px);
   }
 </style>
