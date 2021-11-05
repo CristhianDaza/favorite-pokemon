@@ -1,4 +1,10 @@
-# favorite-pokemon
+# Pokedex and Favorite Pokemon
+
+## Tecnologias utilizadas
+- Vue.js
+- TypeScript
+- Axios
+- Para el CSS opte por hacer la aplicacion con css puro, sin usar Frameworks o librerias.
 
 ## Project setup
 ```
