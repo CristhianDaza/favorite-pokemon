@@ -2,16 +2,15 @@
   <div class="container-fluid container-footer">
     <div class="container footer">
       <action-button
-        :active="true"
+        :active="buttonAllActive"
         iconName="all"
         @set-action="setAllPokemons"
-        :isDisabled="isDisabled"
         :isFullWith="true"
       >
         All
       </action-button>
       <action-button
-        :active="true"
+        :active="buttonFavoriteActive"
         iconName="star"
         :isFullWith="true"
         @set-action="setFavoritePokemons"
@@ -35,8 +34,12 @@ import { Pokemon } from '@/store/module'
 })
 
 export default class FotterButtons extends Vue {
-  private get isDisabled (): boolean {
-    return Pokemon.IsDisabled
+  private get buttonAllActive (): boolean {
+    return Pokemon.ButtonAllActive
+  }
+
+  private get buttonFavoriteActive (): boolean {
+    return Pokemon.ButtonFavoriteActive
   }
 
   private setAllPokemons () {

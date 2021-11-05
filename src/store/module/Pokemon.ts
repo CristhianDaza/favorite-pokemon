@@ -15,16 +15,22 @@ config.rawError = true
 
 class PokemonStore extends VuexModule {
   public pokemonList:pokemonResult[] = []
-  public isDisabled = false
+  public buttonAllActive = true
+  public buttonFavoriteActive = false
   public favoritePokemon:pokemonResult[] = []
   public infoPokemon:pokemonInfo[] = []
+  public allPokemons:pokemonResult[] = []
 
   get PokemonList () {
     return this.pokemonList
   }
 
-  get IsDisabled () {
-    return this.isDisabled
+  get ButtonAllActive () {
+    return this.buttonAllActive
+  }
+
+  get ButtonFavoriteActive () {
+    return this.buttonFavoriteActive
   }
 
   get FavoritePokemon () {
@@ -47,8 +53,13 @@ class PokemonStore extends VuexModule {
   }
 
   @Mutation
-  CHANGE_DISABLED (payload: boolean): void {
-    this.isDisabled = payload
+  CHANGE_ACTIVE_ALL (payload: boolean): void {
+    this.buttonAllActive = payload
+  }
+
+  @Mutation
+  CHANGE_ACTIVE_FAVORITE (payload: boolean): void {
+    this.buttonFavoriteActive = payload
   }
 
   @Mutation
@@ -59,6 +70,11 @@ class PokemonStore extends VuexModule {
   @Mutation
   SET_INFO_POKEMON (payload:pokemonInfo[]): void {
     this.infoPokemon = payload
+  }
+
+  @Mutation
+  SET_ALL_POKEMONS (payload: pokemonResult[]): void {
+    this.allPokemons = payload
   }
 
   @Action({ commit: 'SET_POKEMON' })
@@ -77,6 +93,7 @@ class PokemonStore extends VuexModule {
       .catch(() => {
         result = []
       })
+    this.context.commit('SET_ALL_POKEMONS', result)
     Loading.SET_LOADING(false)
     return result
   }
@@ -100,26 +117,15 @@ class PokemonStore extends VuexModule {
 
   @Action({ commit: 'SET_POKEMON' })
   async getAllPokemons () {
-    Loading.SET_LOADING(true)
-    let result:pokemonResult[] = []
-
-    await getPokemonApi('pokemon?limit=1118')
-      .then(({ data }) => {
-        data.results.forEach((pokemon: pokemonResult) => {
-          pokemon.favorite = false
-          result.push(pokemon)
-        })
-      })
-      .catch(() => {
-        result = []
-      })
-    this.context.commit('CHANGE_DISABLED', true)
-    Loading.SET_LOADING(false)
-    return result
+    this.context.commit('CHANGE_ACTIVE_ALL', true)
+    this.context.commit('CHANGE_ACTIVE_FAVORITE', false)
+    return this.allPokemons
   }
 
   @Action({ commit: 'SET_POKEMON' })
   getFavoritePokemon () {
+    this.context.commit('CHANGE_ACTIVE_ALL', false)
+    this.context.commit('CHANGE_ACTIVE_FAVORITE', true)
     return this.favoritePokemon
   }
 

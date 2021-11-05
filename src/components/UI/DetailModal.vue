@@ -42,12 +42,16 @@
         </div>
       </div>
     </div>
+    <widget-alert
+      v-if="showAlert"
+      :message="messageAlert"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
-import { ActionButton } from '@/components/UI'
+import { ActionButton, WidgetAlert } from '@/components/UI'
 import { pokemonInfo, pokemonResult } from '@/typings'
 import { copyClipboard } from '@/utils/copyClipboard'
 import { Pokemon } from '@/store/module'
@@ -55,11 +59,16 @@ import { Pokemon } from '@/store/module'
 @Component({
   name: 'DetailModal',
   components: {
-    ActionButton
+    ActionButton,
+    WidgetAlert
   }
 })
 export default class DetailModal extends Vue {
   private imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork'
+
+  private messageAlert = ''
+
+  private showAlert = false
 
   @Prop({ type: Array, required: true })
   private pokemon!: pokemonInfo[]
@@ -82,15 +91,29 @@ export default class DetailModal extends Vue {
         `Types: ${this.types}`
       ].join(', ')
     )
+    this.messageAlert = 'Copied to clipboard'
+    this.showAlert = true
+
+    setTimeout(() => {
+      this.showAlert = false
+      this.messageAlert = ''
+    }, 2000)
   }
 
   private setFavorite (pokemon: pokemonResult[]) {
+    this.showAlert = true
     Pokemon.getFavorite(pokemon[0].name)
     if (pokemon[0].favorite) {
+      this.messageAlert = `${pokemon[0].name} remove to favorite`
       pokemon[0].favorite = false
     } else {
+      this.messageAlert = `${pokemon[0].name} add to favorite`
       pokemon[0].favorite = true
     }
+    setTimeout(() => {
+      this.showAlert = false
+      this.messageAlert = ''
+    }, 2000)
   }
 }
 </script>

@@ -3,7 +3,6 @@
     class="action-button"
     :class="[active ? 'active' : 'disabled', isFullWith ? 'full-width' : '']"
     @click="setAction"
-    :disabled="isDisabled"
   >
     <i
       v-if="iconName"
@@ -31,9 +30,6 @@ export default class ActionsButton extends Vue {
 
   @Prop({ type: String, required: false })
   private iconName!: string;
-
-  @Prop({ type: Boolean, required: false })
-  private isDisabled!: boolean;
 
   @Prop({ type: Boolean, required: false })
   private isFullWith!: boolean;

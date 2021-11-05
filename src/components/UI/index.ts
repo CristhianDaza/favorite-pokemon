@@ -4,6 +4,7 @@ import SearchInput from './SearchInput.vue'
 import ListItem from './ListItem.vue'
 import FooterButtons from './FooterButtons.vue'
 import DetailModal from './DetailModal.vue'
+import WidgetAlert from './WidgetAlert.vue'
 
 export {
   ActionButton,
@@ -11,5 +12,6 @@ export {
   SearchInput,
   ListItem,
   FooterButtons,
-  DetailModal
+  DetailModal,
+  WidgetAlert
 }

@@ -35,6 +35,10 @@
       @close-modal="closeModal"
       :pokemon="infoPokemon"
     />
+    <widget-alert
+      v-if="showAlert"
+      :message="messageAlert"
+    />
   </div>
 </template>
 
@@ -45,7 +49,8 @@ import {
   HeroUnit,
   ListItem,
   FooterButtons,
-  DetailModal
+  DetailModal,
+  WidgetAlert
 } from '@/components/UI'
 import { Loader } from '../components/layout'
 import { Loading, Pokemon } from '@/store/module'
@@ -59,7 +64,8 @@ import { pokemonInfo, pokemonResult } from '@/typings'
     HeroUnit,
     ListItem,
     FooterButtons,
-    DetailModal
+    DetailModal,
+    WidgetAlert
   }
 })
 export default class PokemonList extends Vue {
@@ -73,6 +79,10 @@ export default class PokemonList extends Vue {
 
   private showModal = false
 
+  private messageAlert = ''
+
+  private showAlert = false
+
   async created (): Promise<void> {
     if (this.getPokemon.length === 0) {
       await Pokemon.getPokemon()
@@ -85,6 +95,7 @@ export default class PokemonList extends Vue {
   }
 
   private goBack (): void {
+    Pokemon.getAllPokemons()
     this.$router.push({ name: 'Home' })
   }
 
@@ -101,7 +112,22 @@ export default class PokemonList extends Vue {
   }
 
   private setFavorite (name: string) {
+    this.showAlert = true
+    this.getPokemon.forEach(pokemon => {
+      if (pokemon.name === name) {
+        if (pokemon.favorite) {
+          this.messageAlert = `${name} remove to favorite`
+        } else {
+          this.messageAlert = `${name} add to favorite`
+        }
+      }
+    })
     Pokemon.getFavorite(name)
+
+    setTimeout(() => {
+      this.showAlert = false
+      this.messageAlert = ''
+    }, 2000)
   }
 
   private async showPokemon (pokemon:pokemonResult) {
