@@ -12,9 +12,10 @@
           <list-item
             v-for="(pokemon, i) in getPokemon"
             :key="i"
-            :name="pokemon.name"
             :favorite="pokemon.favorite"
+            :pokemon="pokemon"
             @set-favorite="setFavorite"
+            @show-pokemon="showPokemon"
           />
         </div>
         <footer-buttons />
@@ -29,7 +30,11 @@
         />
       </template>
     </div>
-    <detail-modal />
+    <detail-modal
+      v-if="showModal"
+      @close-modal="closeModal"
+      :pokemon="infoPokemon"
+    />
   </div>
 </template>
 
@@ -44,7 +49,7 @@ import {
 } from '@/components/UI'
 import { Loader } from '../components/layout'
 import { Loading, Pokemon } from '@/store/module'
-import { pokemonResult } from '@/typings'
+import { pokemonInfo, pokemonResult } from '@/typings'
 
 @Component({
   name: 'PokemonList',
@@ -65,6 +70,8 @@ export default class PokemonList extends Vue {
   private textButton = 'Go back home';
 
   private search = '';
+
+  private showModal = false
 
   async created (): Promise<void> {
     if (this.getPokemon.length === 0) {
@@ -89,8 +96,22 @@ export default class PokemonList extends Vue {
     return Pokemon.filterByName(this.search)
   }
 
+  public get infoPokemon ():pokemonInfo[] {
+    return Pokemon.InfoPokemon
+  }
+
   private setFavorite (name: string) {
     Pokemon.getFavorite(name)
+  }
+
+  private async showPokemon (pokemon:pokemonResult) {
+    await Pokemon.getInfoPokemon(pokemon)
+    this.showModal = true
+  }
+
+  private closeModal () {
+    this.showModal = false
+    Pokemon.cleanModal()
   }
 }
 </script>

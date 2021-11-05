@@ -1,30 +1,43 @@
 <template>
   <div class="modal container-fluid">
     <div class="card">
-      <span class="close">
+      <span
+        class="close"
+        @click="closeModal"
+      >
         <i class="icon icon-close"></i>
       </span>
       <div
         class="card-img"
         :style="{'background-image': 'url(' + require('@/assets/img/pokemon/background.png') + ')'}"
       >
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" alt="Squirtle">
+        <img :src="`${imageUrl}/${pokemon[0].imageId}.png`" :alt="pokemon[0].name">
       </div>
       <div class="card-content">
         <div class="card-text">
-          <p><span>Name:</span> Squirtle</p>
-          <p><span>Weight:</span> 20</p>
-          <p><span>Heigth:</span> 18</p>
-          <p><span>Types:</span> Normal, Water</p>
+          <p><strong>Name:</strong> {{ pokemon[0].name }}</p>
+          <p><strong>Weight:</strong> {{ pokemon[0].weight }}</p>
+          <p><strong>Heigth:</strong> {{ pokemon[0].height }}</p>
+          <p><strong>Types:</strong> <span
+            v-for="types in pokemon[0].types"
+            :key="types.slot"
+          > {{ types.type.name }}
+          </span></p>
         </div>
         <div class="card-button">
           <action-button
             :active="true"
+            @set-action="copyClipboard(pokemon[0])"
           >
             Share to my friends
           </action-button>
-          <span>
-            <i class="icon icon-star-active"></i>
+          <span
+            @click="setFavorite(pokemon)"
+          >
+            <i
+              class="icon"
+              :class="`icon-star-${pokemon[0].favorite ? 'active' : 'disabled'}`"
+            ></i>
           </span>
         </div>
       </div>
@@ -33,8 +46,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
 import { ActionButton } from '@/components/UI'
+import { pokemonInfo, pokemonResult } from '@/typings'
+import { copyClipboard } from '@/utils/copyClipboard'
+import { Pokemon } from '@/store/module'
 
 @Component({
   name: 'DetailModal',
@@ -42,7 +58,41 @@ import { ActionButton } from '@/components/UI'
     ActionButton
   }
 })
-export default class DetailModal extends Vue {}
+export default class DetailModal extends Vue {
+  private imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork'
+
+  @Prop({ type: Array, required: true })
+  private pokemon!: pokemonInfo[]
+
+  @Emit('close-modal')
+  private closeModal ():boolean {
+    return true
+  }
+
+  public get types ():string {
+    return this.pokemon[0].types.map((type) => type.type.name).join(', ')
+  }
+
+  private async copyClipboard (pokemon: pokemonInfo) {
+    await copyClipboard(
+      [
+        `Name: ${pokemon.name}`,
+        `Weight: ${pokemon.weight}`,
+        `Height: ${pokemon.height}`,
+        `Types: ${this.types}`
+      ].join(', ')
+    )
+  }
+
+  private setFavorite (pokemon: pokemonResult[]) {
+    Pokemon.getFavorite(pokemon[0].name)
+    if (pokemon[0].favorite) {
+      pokemon[0].favorite = false
+    } else {
+      pokemon[0].favorite = true
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -85,13 +135,14 @@ export default class DetailModal extends Vue {}
     position: relative;
   }
 
-  .card-text span {
+  .card-text p span:first-child {
     font-weight: 700;
   }
 
   .card-text p {
     font-size: 18px;
     margin-bottom: 20px;
+    text-transform: capitalize;
   }
 
   .card .card-text p::after{
@@ -111,10 +162,15 @@ export default class DetailModal extends Vue {}
     justify-content: space-between;
   }
 
+  .card-button span i {
+    cursor: pointer;
+  }
+
   .close {
     position: absolute;
     right: 20px;
     top: 20px;
+    cursor: pointer;
   }
 
   @media (max-width: 427px) {

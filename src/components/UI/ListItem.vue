@@ -1,9 +1,11 @@
 <template>
   <div class="list-pokemon">
-    <p>{{ name }}</p>
+    <p
+      @click="showPokemon(pokemon)"
+    >{{ pokemon.name }}</p>
     <span>
       <i
-        @click="setFavorite(name)"
+        @click="setFavorite(pokemon.name)"
         class="icon favorite"
         :class="`icon-star-${favorite ? 'active' : 'disabled'}`"
       ></i>
@@ -12,14 +14,15 @@
 </template>
 
 <script lang="ts">
+import { pokemonResult } from '@/typings'
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
 
 @Component({
   name: 'ListItem'
 })
 export default class ListItem extends Vue {
-  @Prop({ type: String, required: true })
-  private name!: string
+  @Prop({ type: Object, required: true })
+  private pokemon!: pokemonResult
 
   @Prop({ type: Boolean, required: true })
   private favorite!: boolean
@@ -27,6 +30,11 @@ export default class ListItem extends Vue {
   @Emit('set-favorite')
   private setFavorite (name: string): string {
     return name
+  }
+
+  @Emit('show-pokemon')
+  private showPokemon (pokemon:pokemonResult):pokemonResult {
+    return pokemon
   }
 }
 </script>
@@ -42,6 +50,7 @@ export default class ListItem extends Vue {
   .list-pokemon p {
     font-size: 22px;
     text-transform: capitalize;
+    cursor: pointer;
   }
 
   .list-pokemon .favorite {

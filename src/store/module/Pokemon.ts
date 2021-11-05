@@ -1,7 +1,7 @@
 import { getModule, Module, Mutation, VuexModule, config, Action } from 'vuex-module-decorators'
 import store from '@/store'
 import { getPokemonApi } from '@/api/getPokemonApi'
-import { pokemonResult } from '@/typings'
+import { pokemonInfo, pokemonResult } from '@/typings'
 import { Loading } from '@/store/module'
 
 config.rawError = true
@@ -17,6 +17,7 @@ class PokemonStore extends VuexModule {
   public pokemonList:pokemonResult[] = []
   public isDisabled = false
   public favoritePokemon:pokemonResult[] = []
+  public infoPokemon:pokemonInfo[] = []
 
   get PokemonList () {
     return this.pokemonList
@@ -36,6 +37,10 @@ class PokemonStore extends VuexModule {
     }
   }
 
+  get InfoPokemon (): pokemonInfo[] {
+    return this.infoPokemon
+  }
+
   @Mutation
   SET_POKEMON (payload: pokemonResult[]): void {
     this.pokemonList = payload
@@ -51,12 +56,18 @@ class PokemonStore extends VuexModule {
     this.favoritePokemon = payload
   }
 
+  @Mutation
+  SET_INFO_POKEMON (payload:pokemonInfo[]): void {
+    this.infoPokemon = payload
+  }
+
   @Action({ commit: 'SET_POKEMON' })
   async getPokemon () {
     Loading.SET_LOADING(true)
     let result:pokemonResult[] = []
+    const url = 'https://pokeapi.co/api/v2/pokemon'
 
-    await getPokemonApi('pokemon')
+    await getPokemonApi(url)
       .then(({ data }) => {
         data.results.forEach((pokemon: pokemonResult) => {
           pokemon.favorite = false
@@ -110,6 +121,41 @@ class PokemonStore extends VuexModule {
   @Action({ commit: 'SET_POKEMON' })
   getFavoritePokemon () {
     return this.favoritePokemon
+  }
+
+  @Action({ commit: 'SET_INFO_POKEMON' })
+  async getInfoPokemon (pokemon: pokemonResult): Promise<pokemonInfo[]> {
+    let result: pokemonInfo[] = []
+
+    await getPokemonApi(pokemon.url)
+      .then(({ data }) => {
+        const pokemonRes = {
+          name: '',
+          height: 0,
+          imageId: 0,
+          weight: 0,
+          types: [],
+          favorite: false
+        }
+
+        pokemonRes.name = data.name
+        pokemonRes.height = data.height
+        pokemonRes.imageId = data.id
+        pokemonRes.weight = data.weight
+        pokemonRes.types = data.types
+        pokemonRes.favorite = pokemon.favorite
+
+        result.push(pokemonRes)
+      })
+      .catch(() => {
+        result = []
+      })
+    return result
+  }
+
+  @Action({ commit: 'SET_INFO_POKEMON' })
+  cleanModal () {
+    return []
   }
 }
 
