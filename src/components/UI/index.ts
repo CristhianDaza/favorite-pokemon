@@ -3,5 +3,13 @@ import HeroUnit from './HeroUnit.vue'
 import SearchInput from './SearchInput.vue'
 import ListItem from './ListItem.vue'
 import FooterButtons from './FooterButtons.vue'
+import DetailModal from './DetailModal.vue'
 
-export { ActionButton, HeroUnit, SearchInput, ListItem, FooterButtons }
+export {
+  ActionButton,
+  HeroUnit,
+  SearchInput,
+  ListItem,
+  FooterButtons,
+  DetailModal
+}

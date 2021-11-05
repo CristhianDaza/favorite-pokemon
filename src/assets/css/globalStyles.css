@@ -49,6 +49,10 @@ p {
     background-image: url('../img/icon/search.svg');
 }
 
+.icon-close {
+    background-image: url('../img/icon/close.svg');
+}
+
 .container {
     max-width: 50%;
     margin: 0 auto;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pokemon-list-container">
     <template v-if="isLoading">
       <loader />
     </template>
@@ -29,12 +29,19 @@
         />
       </template>
     </div>
+    <detail-modal />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { SearchInput, HeroUnit, ListItem, FooterButtons } from '@/components/UI'
+import {
+  SearchInput,
+  HeroUnit,
+  ListItem,
+  FooterButtons,
+  DetailModal
+} from '@/components/UI'
 import { Loader } from '../components/layout'
 import { Loading, Pokemon } from '@/store/module'
 import { pokemonResult } from '@/typings'
@@ -46,7 +53,8 @@ import { pokemonResult } from '@/typings'
     Loader,
     HeroUnit,
     ListItem,
-    FooterButtons
+    FooterButtons,
+    DetailModal
   }
 })
 export default class PokemonList extends Vue {
@@ -88,6 +96,10 @@ export default class PokemonList extends Vue {
 </script>
 
 <style scoped>
+  .pokemon-list-container{
+    position: relative;
+  }
+
   .container-list {
     margin-top: 20px;
     min-height: calc(100vh - 170px);
