@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
-import { ActionButton, WidgetAlert } from '@/components/UI'
+import { ActionButton } from '@/components/UI'
 import { pokemonInfo, pokemonResult } from '@/typings'
 import { copyClipboard } from '@/utils/copyClipboard'
 import { Pokemon } from '@/store/module'
@@ -60,7 +60,7 @@ import { Pokemon } from '@/store/module'
   name: 'DetailModal',
   components: {
     ActionButton,
-    WidgetAlert
+    WidgetAlert: () => import('@/components/UI/WidgetAlert.vue')
   }
 })
 export default class DetailModal extends Vue {
