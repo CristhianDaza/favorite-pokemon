@@ -1,10 +1,28 @@
-import get from 'axios'
+import { consultService } from '@/services/apiConfig'
 
-const getPokemonApi = (data: string): Promise<any> => {
-  const url = data
-  return get(url)
-}
+export const getPokemonAll = new Promise((resolve, reject): void => {
+  try {
+    const response = consultService.request({
+      method: 'get'
+    })
+    resolve(response)
+  } catch (error) {
+    console.log(error)
+    reject(error)
+  }
+})
 
-export {
-  getPokemonApi
+export const getPokemon = (idPokemon: string): Promise<unknown> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = consultService.request({
+        method: 'get',
+        url: idPokemon
+      })
+      resolve(response)
+    } catch (error) {
+      console.log(error)
+      reject(error)
+    }
+  })
 }
