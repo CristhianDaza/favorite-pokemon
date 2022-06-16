@@ -1,6 +1,6 @@
 import { getModule, Module, Mutation, VuexModule, config, Action } from 'vuex-module-decorators'
 import store from '@/store'
-import { getPokemonApi } from '@/api/getPokemonApi'
+import { getPokemon, getPokemonAll } from '@/api/getPokemonApi'
 import { pokemonInfo, pokemonResult } from '@/typings'
 import { Loading } from '@/store/module'
 
@@ -31,10 +31,6 @@ class PokemonStore extends VuexModule {
 
   get ButtonFavoriteActive () {
     return this.buttonFavoriteActive
-  }
-
-  get FavoritePokemon () {
-    return this.favoritePokemon
   }
 
   get filterByName () {
@@ -80,19 +76,19 @@ class PokemonStore extends VuexModule {
   @Action({ commit: 'SET_POKEMON' })
   async getPokemon () {
     Loading.SET_LOADING(true)
-    let result:pokemonResult[] = []
-    const url = 'https://pokeapi.co/api/v2/pokemon'
-
-    await getPokemonApi(url)
-      .then(({ data }) => {
-        data.results.forEach((pokemon: pokemonResult) => {
-          pokemon.favorite = false
-          result.push(pokemon)
-        })
+    const result:pokemonResult[] = []
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { data: { results } } = await getPokemonAll
+    try {
+      results.forEach((pokemon: pokemonResult) => {
+        pokemon.favorite = false
+        pokemon.id = pokemon.url.split('/')[6]
+        result.push(pokemon)
       })
-      .catch(() => {
-        result = []
-      })
+    } catch (error) {
+      this.context.commit('SET_ALL_POKEMONS', [])
+    }
     this.context.commit('SET_ALL_POKEMONS', result)
     Loading.SET_LOADING(false)
     return result
@@ -102,7 +98,7 @@ class PokemonStore extends VuexModule {
   getFavorite (name: string) {
     this.pokemonList.forEach(pokemon => {
       if (pokemon.name === name) {
-        if (pokemon.favorite === false) {
+        if (!pokemon.favorite) {
           pokemon.favorite = true
           this.context.commit('SET_FAVORITE_POKEMON', [...this.favoritePokemon, pokemon])
         } else {
@@ -131,31 +127,33 @@ class PokemonStore extends VuexModule {
 
   @Action({ commit: 'SET_INFO_POKEMON' })
   async getInfoPokemon (pokemon: pokemonResult): Promise<pokemonInfo[]> {
-    let result: pokemonInfo[] = []
+    const result: pokemonInfo[] = []
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { data: { height, weight, name, types, id } } = await getPokemon(pokemon.id)
+    try {
+      const pokemonRes = {
+        name: '',
+        height: 0,
+        imageId: 0,
+        weight: 0,
+        types: [],
+        favorite: false
+      }
+      pokemonRes.name = name
+      pokemonRes.height = height
+      pokemonRes.imageId = id
+      pokemonRes.weight = weight
+      pokemonRes.types = types
+      pokemonRes.favorite = pokemon.favorite
 
-    await getPokemonApi(pokemon.url)
-      .then(({ data }) => {
-        const pokemonRes = {
-          name: '',
-          height: 0,
-          imageId: 0,
-          weight: 0,
-          types: [],
-          favorite: false
-        }
+      result.push(pokemonRes)
 
-        pokemonRes.name = data.name
-        pokemonRes.height = data.height
-        pokemonRes.imageId = data.id
-        pokemonRes.weight = data.weight
-        pokemonRes.types = data.types
-        pokemonRes.favorite = pokemon.favorite
-
-        result.push(pokemonRes)
-      })
-      .catch(() => {
-        result = []
-      })
+      this.context.commit('SET_INFO_POKEMON', result)
+    } catch (error) {
+      this.context.commit('SET_INFO_POKEMON', [])
+      console.log(error)
+    }
     return result
   }
 
